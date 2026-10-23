@@ -1,4 +1,4 @@
-from locust import HttpUser, task, between, constant, constant_pacing
+from locust import HttpUser, task, between, constant_pacing, constant
 
 class Visiteur(HttpUser):
     host = "http://localhost:8000"
@@ -15,3 +15,4 @@ class Veilleur(HttpUser):
     @task
     def check_vie(self):
         self.client.get("/api/health")
+

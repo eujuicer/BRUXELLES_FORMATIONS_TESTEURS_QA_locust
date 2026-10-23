@@ -63,9 +63,16 @@ Un testeur de performance prévoit **avant** de lancer. Sinon, il ne peut pas sa
 
 | Question | Prévision | Mesure |
 |---|---|---|
-| 10 visiteurs | | |
-| 1 veilleur | | — |
-| 5 visiteurs sans attente | | |
+| 10 visiteurs | ~5 RPS | 4,9 RPS |
+| 1 veilleur | 0,2 RPS (10 veilleurs pour 2 RPS) | — |
+| 5 visiteurs sans attente | RPS en forte hausse | 299,4 RPS (médiane 16 ms) |
+
+**Mes calculs** — formule : RPS ≈ utilisateurs ÷ (temps de réponse + attente moyenne)
+
+- **10 visiteurs** : attente moyenne de `between(1, 3)` = (1 + 3) ÷ 2 = 2 s. Un visiteur : 1 ÷ 2 = 0,5 RPS. Dix visiteurs : 10 × 0,5 = **5 RPS**. Mesuré : 4,9.
+- **1 veilleur** : `constant_pacing(5)`, une requête toutes les 5 s, donc 1 ÷ 5 = **0,2 RPS**. Pour 2 RPS : 2 ÷ 0,2 = **10 veilleurs**. Contrôle : 3 veilleurs mesurés à 0,6 RPS = 3 × 0,2.
+- **5 visiteurs sans attente** : temps de réponse moyen 16,71 ms = 0,01671 s. Un visiteur : 1 ÷ 0,01671 ≈ 60 RPS. Cinq visiteurs : 5 × 60 ≈ **300 RPS**. Mesuré : 299,4.
+- **Médiane** : 16 ms sans attente. Le RPS a été multiplié par environ 120, mais le temps de réponse de l'API reste de quelques ms.
 
 ---
 
