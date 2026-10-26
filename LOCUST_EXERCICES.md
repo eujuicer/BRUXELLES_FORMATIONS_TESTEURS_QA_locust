@@ -47,6 +47,12 @@ L'équipe d'exploitation a mis en place une sonde de supervision : toutes les **
 Relisez le tableau de la section 2.1 du cours : une des fonctions de `wait_time` donne une attente fixe. Pensez à l'importer.
 </details>
 
+**Mes réponses** — `wait_time = constant_pacing(5)` : une requête toutes les 5 s **exactement**. `constant(5)` attendrait 5 s *après* la réponse, donc le rythme dériverait.
+
+- **Répartition** avec 6 utilisateurs : `{"Veilleur": 3, "Visiteur": 3}`. Sans `weight`, les deux classes ont le même poids.
+- **Lignes dans *Statistics*** : une par endpoint (`/api/events`, `[init]`, `/api/events/[id]`, `/api/health`), plus *Aggregated*.
+- **`locust Visiteur`** : seule cette classe est lancée, et la ligne `/api/health` disparaît.
+
 ---
 
 ## Exercice 2 — Prévoir avant de mesurer
@@ -92,6 +98,12 @@ Les visiteurs ne font pas que parcourir : ils cherchent. `GET /api/events` accep
 - La répartition entre catalogue, détail et recherche correspond-elle à vos poids ? Calculez la proportion attendue pour chaque tâche.
 - Où se place la recherche en temps de réponse, par rapport au catalogue et au détail ?
 
+**Mes réponses** (10 visiteurs, 1 minute)
+
+- **Une seule ligne**, grâce à `name="/api/events?q=[mot]"`.
+- **Proportions attendues** : 3 + 5 + 2 = 10, donc catalogue 30 %, détail 50 %, recherche 20 % (25 % / 41,7 % / 16,7 % / 16,7 % une fois l'exo 4 ajouté). Mesuré sur 295 requêtes : 24,7 % / 40 % / 20,3 % / 14,9 %. C'est conforme, aux variations aléatoires près.
+- **Temps de réponse (médiane)** : recherche 5 ms, catalogue 5 ms, détail 8 ms. La recherche ne coûte pas plus cher que le catalogue.
+
 ---
 
 ## Exercice 4 — Des villes qui existent vraiment
@@ -116,6 +128,11 @@ Les visiteurs ne font pas que parcourir : ils cherchent. `GET /api/events` accep
 Un `set` Python élimine les doublons. `random.choice` n'accepte pas un `set` : transformez-le en liste.
 </details>
 
+**Mes réponses** — `self.villes = list({event["city"] for event in events_list})`, dans `on_start`, en réutilisant la réponse du catalogue.
+
+- **Requêtes `[init]`** : 10 pour 10 visiteurs, le même nombre qu'avant. Aucune requête ajoutée.
+- **Résultats par ville** : `Bruxelles` → « Atelier QA & Test automatise » et « Nuit electro - Halles Saint-Gery » ; `Gand` → « Conference DevOps & Cloud 2026 » ; `Liege` → « Festival Jazz au Parc ». Attention : `?city=bruxelles` (minuscules) renvoie `[]`, car le filtre respecte la casse.
+
 ---
 
 ## Exercice 5 — Des recherches qui ne mentent pas
@@ -139,6 +156,17 @@ Vos messages d'échec doivent dire **quelle** recherche a échoué.
 
 **C'est terminé quand** 10 visiteurs pendant une minute ne produisent aucun échec, et que vous avez vu chacune de vos vérifications échouer au moins une fois.
 
+**Mes réponses** — `catch_response=True` + `with` ; le statut d'abord, puis `if not resultats` (liste vide), puis `elif any(...)`.
+
+| Sabotage temporaire | Échecs | Message dans *Failures* |
+|---|---|---|
+| `q = mot + "zzz"` | 100 % | `Recherche mot-clé 'jazz' : aucun résultat` |
+| chercher `"xyz"` dans les titres | 100 % | `Recherche mot-clé 'electro' : un titre ne contient pas le mot-clé` |
+| `city = ville.lower()` | 100 % | `Recherche ville 'Bruxelles' : aucun résultat` |
+| comparer à `ville + "x"` | 100 % | `Recherche ville 'Gand' : un événement est dans une autre ville` |
+
+Rétabli : 10 visiteurs pendant 1 minute, 306 requêtes, **0 échec**.
+
 ---
 
 ## Exercice 6 — Casser pour comprendre
@@ -160,6 +188,21 @@ Pour chaque manipulation, complétez :
 | Compteur d'utilisateurs actifs | | |
 
 Puis répondez : si vous n'aviez regardé que le tableau *Statistics*, qu'auriez-vous conclu dans chacun des deux cas ?
+
+**Mes réponses** (10 visiteurs, 30 s). A : `e["ville"]` au lieu de `e["city"]` dans `recherche_ville`. B : port 8001.
+
+| | Manipulation A | Manipulation B |
+|---|---|---|
+| L'endpoint concerné est-il dans *Statistics* ? | **Non** : la ligne `/api/events?city=[ville]` a disparu | Seulement `/api/events [init]` |
+| Colonne *# Fails* | **0** partout | 10 / 10 (100 %), `ConnectionRefusedError` |
+| Onglet *Exceptions* | 25 × `KeyError: 'ville'` | **Vide** |
+| Terminal | 25 traces `KeyError: 'ville'` | 10 × `JSONDecodeError`, un par visiteur |
+| Compteur d'utilisateurs actifs | 10 du début à la fin | **10 → 0** en 4 s |
+
+- **A** : l'exception survient dans le bloc `catch_response`, donc la requête n'est comptée ni en succès ni en échec : elle **disparaît**. L'erreur est dans une tâche : seule la tâche s'arrête, l'utilisateur survit. Avec *Statistics* seul, on conclurait **« tout va bien, 0 échec »** (code de sortie 0), alors que la recherche par ville n'est plus testée.
+- **B** : `response.json()` plante dans `on_start`, et l'utilisateur meurt définitivement, sans être remplacé. Avec *Statistics* seul, on conclurait **« l'API est en panne »**. C'est vrai, mais on ne verrait pas que le test s'est vidé de ses utilisateurs et n'a plus rien mesuré pendant 26 s.
+
+> 0 % d'échecs ne prouve rien tant qu'on n'a pas regardé *Exceptions*, le terminal et le nombre d'utilisateurs actifs.
 
 ---
 
@@ -188,6 +231,14 @@ Ouvrez d'abord les deux URL dans http://localhost:8000/docs (bouton *Authorize* 
 
 **Bonus — le back-office est-il bien protégé sous charge ?** Ajoutez au `ClientConnecte` une tâche qui vérifie qu'un client **n'a pas** accès à `/api/admin/summary`. Une réponse `403` doit être comptée comme un **succès**, tout autre statut comme un échec. Cette tâche doit apparaître sur sa propre ligne, distincte de celle de l'organisateur.
 
+**Mes réponses**
+
+- **Champs** : `/api/admin/summary` renvoie `{"events", "published", "total_sold", "total_revenue_cents"}` ; `/api/admin/events` renvoie une liste avec `capacity`, `sold`, `revenue_cents`, `fill_rate`.
+- **Vérifications** : `published > events` → échec ; liste vide → échec ; `any(e["sold"] > e["capacity"])` → échec. Chacune a été sabotée une fois et a bien échoué avec son message.
+- **Répartition** : poids Visiteur 3, Veilleur 1, ClientConnecte 1, Organisateur 1, soit 6 au total. Pour 20 utilisateurs : 20 × 3 ÷ 6 = 10 visiteurs, et 20 ÷ 6 = 3,33 pour chacun des autres. Mesuré : `{"ClientConnecte": 4, "Organisateur": 3, "Veilleur": 3, "Visiteur": 10}` (l'utilisateur restant après l'arrondi va à une classe).
+- **Temps de réponse** (20 utilisateurs, 1 minute) : `/api/admin/events` a une médiane de **15 ms**, contre **5 ms** pour `/api/events`, soit 3 fois plus. Le back-office calcule les ventes de chaque événement. Limites : la base ne contient aucune commande (`total_sold: 0`), donc l'écart est sous-estimé ; et il n'y a que 14 requêtes, trop peu pour des percentiles fiables.
+- **Bonus** : `response.success()` si le statut vaut 403, `failure` sinon, avec `name="/api/admin/summary [client interdit]"`. Résultat : 0 échec. Sabotage (le client se connecte avec le compte organisateur) : 100 % d'échecs, `HTTP 200`. Le refus prend 4 ms, contre 13 ms pour l'organisateur.
+
 ---
 
 ## Exercice 8 — Comparer les profils (facultatif)
@@ -202,6 +253,35 @@ En mode headless, lancez **chaque classe seule**, 10 utilisateurs, 30 secondes, 
 2. Pour quelle classe les percentiles sont-ils le moins fiables ? Pourquoi ?
 3. Quelle classe produit le plus de requêtes par utilisateur ? Est-ce cohérent avec son `wait_time` ?
 
+**Mes réponses** — CSV dans `perf-locust/resultats/` :
+
+```bat
+locust --headless -u 10 -r 5 -t 30s --reset-stats --only-summary --csv resultats/visiteur Visiteur
+```
+
+Même commande pour `veilleur`/`Veilleur`, `client`/`ClientConnecte` et `organisateur`/`Organisateur`.
+
+| Classe | Requêtes | Médiane globale | p95 global | Endpoint le plus lent (médiane) |
+|---|---|---|---|---|
+| Visiteur | 153 | 7 ms | 9 ms | `/api/events/[id]`, 8 ms |
+| Veilleur | 55 | 4 ms | 8 ms | `/api/health`, 4 ms |
+| ClientConnecte | 81 | 5 ms | 9 ms | `/api/auth/token`, 250 ms |
+| Organisateur | 42 | 14 ms | 260 ms | `/api/auth/token`, 261 ms |
+
+1. **La médiane la plus élevée** est celle de `POST /api/auth/token`, environ **250 à 260 ms**, 20 à 50 fois plus que les autres : le serveur vérifie le mot de passe avec un calcul volontairement lent. Hors connexion, c'est `/api/admin/events` (14 ms).
+   Seulement 5 connexions apparaissent pour 10 utilisateurs : `--reset-stats` a effacé celles des 5 premiers, connectés avant la fin de la montée en charge.
+2. **Les percentiles les moins fiables sont ceux de l'`Organisateur`** : 13 requêtes `summary` et 24 `admin/events` seulement, à cause de son attente de 5 à 10 s. Sur 13 valeurs, le p95 est presque la valeur maximale : une seule requête lente suffit à le faire bouger. Son p95 global (260 ms) est aussi tiré vers le haut par les connexions, qui pèsent lourd parmi si peu de requêtes.
+3. **Le `Visiteur` produit le plus de requêtes par utilisateur** : environ 15 en 30 s. C'est cohérent avec les `wait_time` :
+
+   | Classe | `wait_time` | Cycle moyen | Attendu en 30 s | Mesuré |
+   |---|---|---|---|---|
+   | Visiteur | `between(1, 3)` | 2 s | 15 | 15,3 |
+   | ClientConnecte | `between(2, 5)` | 3,5 s | 8,6 | 8,1 |
+   | Veilleur | `constant_pacing(5)` | 5 s | 6 | 5,5 |
+   | Organisateur | `between(5, 10)` | 7,5 s | 4 | 4,2 |
+
+**Remarque** : le `Veilleur` a eu 5 échecs `ConnectionAbortedError` à une mesure, et 0 à la suivante. Ils sont intermittents. Explication probable : le serveur ferme une connexion inactive au bout d'environ 5 s, au moment précis où le veilleur la réutilise, puisqu'il revient toutes les 5 s. C'est un effet du rythme du test, pas une panne de l'API, mais une vraie sonde au même rythme le subirait aussi.
+
 ---
 
 ## Exercice 9 — Un critère qui ne ment pas
@@ -215,6 +295,23 @@ En mode headless, lancez **chaque classe seule**, 10 utilisateurs, 30 secondes, 
    - si plus de **1 %** des requêtes ont échoué ;
    - s'il n'a exécuté **aucune** requête.
 4. Vérifiez les deux situations : API normale → `0` ; port 8001 → `1`.
+
+**Mes réponses**
+
+1. **Bilan avec le critère du cours (p95 seul), port 8001** : `10 requêtes, p95 = 4100 ms, échecs = 100 %`. Une seule ligne, `/api/events [init]`, avec 10 échecs sur 10. Les 10 visiteurs meurent dans `on_start` (`JSONDecodeError` dans le terminal) : il ne reste aucun utilisateur actif.
+   **Code de sortie : `1`, mais par coïncidence.** Sous Windows, une connexion refusée met environ 2 s à échouer, donc p95 = 4100 ms > 300 ms. Sous Linux, comme sur un serveur de CI, elle échoue en environ 1 ms : p95 ≈ 1 ms < 300 ms, donc le code serait **`0`**. `process_exit_code` remplace le code par défaut de Locust (1 dès qu'une requête échoue) : notre fonction devient le seul juge.
+2. **Pourquoi c'est grave** : le pipeline ne lit que le code de sortie. Avec `0`, il considère le test réussi et continue (fusion, déploiement). On met en production une version **qui n'a pas été testée**, avec une fausse confiance. C'est un **faux positif** (« faux vert ») : pire que pas de test, parce qu'on se croit protégé.
+3. **Critère fiable** : trois conditions, dans cet ordre.
+   - `num_requests == 0` → `1`. Vérifiée en premier : sans requête, p95 = 0 et échecs = 0 %, donc les deux autres conditions passeraient.
+   - `fail_ratio > 0.01` → `1`. Détecte le port 8001 quelle que soit la vitesse des erreurs.
+   - `p95 > 300` → `1`.
+   - Sinon → `0`.
+4. **Vérification** :
+
+   | Situation | Bilan | Code |
+   |---|---|---|
+   | API normale | 168 requêtes, p95 = 15 ms, 0 % d'échecs | `0` |
+   | Port 8001 | 10 requêtes, 100 % d'échecs | `1` |
 
 ---
 
