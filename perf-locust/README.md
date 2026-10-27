@@ -17,11 +17,13 @@ Exercices de la formation Testeur QA (Bruxelles Formation) : tests de charge de 
 
 Prérequis : Python 3 et l'API EventFlow lancée sur http://localhost:8000.
 
+Le dossier du dépôt contient un seul environnement virtuel (`.venv`, à la racine) ; la configuration (`.env`) est dans `perf-locust/`.
+
 ```bat
-cd perf-locust
 python -m venv .venv
-.venv\Scripts\activate.bat
-pip install -r requirements.txt
+.venv\Scriptsctivate.bat
+pip install -r perf-locustequirements.txt
+cd perf-locust
 copy .env.example .env
 ```
 
