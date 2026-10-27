@@ -22,7 +22,8 @@ Le dossier du dépôt contient un seul environnement virtuel (`.venv`, à la rac
 ```bat
 python -m venv .venv
 .venv\Scriptsctivate.bat
-pip install -r perf-locustequirements.txt
+pip install -r perf-locust
+equirements.txt
 cd perf-locust
 copy .env.example .env
 ```
