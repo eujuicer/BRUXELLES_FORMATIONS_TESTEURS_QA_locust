@@ -1,0 +1,88 @@
+15:50:44
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;0.85%;108.5MiB / 31.31GiB
+eventflow-db-1;3.86%;42.9MiB / 31.31GiB
+15:50:48
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;8.56%;108.8MiB / 31.31GiB
+eventflow-db-1;2.49%;43.45MiB / 31.31GiB
+15:50:51
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;11.27%;109MiB / 31.31GiB
+eventflow-db-1;3.28%;46.12MiB / 31.31GiB
+15:50:54
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;16.90%;109.5MiB / 31.31GiB
+eventflow-db-1;3.76%;45.89MiB / 31.31GiB
+15:50:58
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;10.61%;109.5MiB / 31.31GiB
+eventflow-db-1;3.77%;46.32MiB / 31.31GiB
+15:51:01
+eventflow-frontend-1;0.01%;62.43MiB / 31.31GiB
+eventflow-backend-1;11.58%;109.5MiB / 31.31GiB
+eventflow-db-1;6.98%;46.34MiB / 31.31GiB
+15:51:05
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;11.56%;109.4MiB / 31.31GiB
+eventflow-db-1;3.27%;46.06MiB / 31.31GiB
+15:51:08
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;14.18%;109.4MiB / 31.31GiB
+eventflow-db-1;3.50%;46.69MiB / 31.31GiB
+15:51:11
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;11.74%;109.4MiB / 31.31GiB
+eventflow-db-1;7.01%;46.05MiB / 31.31GiB
+15:51:15
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;12.57%;109.1MiB / 31.31GiB
+eventflow-db-1;3.53%;45.77MiB / 31.31GiB
+15:51:18
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;10.88%;109.1MiB / 31.31GiB
+eventflow-db-1;3.71%;46.24MiB / 31.31GiB
+15:51:21
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;8.91%;109.1MiB / 31.31GiB
+eventflow-db-1;7.93%;46.18MiB / 31.31GiB
+15:51:25
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;12.07%;109.1MiB / 31.31GiB
+eventflow-db-1;3.37%;45.93MiB / 31.31GiB
+15:51:28
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;11.72%;109.1MiB / 31.31GiB
+eventflow-db-1;3.01%;46.38MiB / 31.31GiB
+15:51:31
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;10.91%;109.1MiB / 31.31GiB
+eventflow-db-1;2.73%;46.08MiB / 31.31GiB
+15:51:35
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;14.21%;109.4MiB / 31.31GiB
+eventflow-db-1;4.00%;45.71MiB / 31.31GiB
+15:51:38
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;14.26%;109.3MiB / 31.31GiB
+eventflow-db-1;2.89%;45.89MiB / 31.31GiB
+15:51:41
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;12.68%;109.3MiB / 31.31GiB
+eventflow-db-1;4.04%;46.16MiB / 31.31GiB
+15:51:45
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;12.77%;109.3MiB / 31.31GiB
+eventflow-db-1;3.59%;45.93MiB / 31.31GiB
+15:51:48
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;13.57%;109.3MiB / 31.31GiB
+eventflow-db-1;3.06%;45.14MiB / 31.31GiB
+15:51:51
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;11.97%;109.3MiB / 31.31GiB
+eventflow-db-1;5.20%;46.06MiB / 31.31GiB
+15:51:55
+eventflow-frontend-1;0.00%;62.43MiB / 31.31GiB
+eventflow-backend-1;0.76%;109.1MiB / 31.31GiB
+eventflow-db-1;0.69%;45.62MiB / 31.31GiB

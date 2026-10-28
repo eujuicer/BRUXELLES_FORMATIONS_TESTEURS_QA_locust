@@ -1,0 +1,56 @@
+13:35:27
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;0.76%;125.1MiB / 31.31GiB
+eventflow-db-1;3.22%;37.54MiB / 31.31GiB
+13:35:34
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;2.66%;125.8MiB / 31.31GiB
+eventflow-db-1;0.50%;38.06MiB / 31.31GiB
+13:35:40
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;3.57%;125.8MiB / 31.31GiB
+eventflow-db-1;1.56%;39.54MiB / 31.31GiB
+13:35:47
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;4.34%;125.8MiB / 31.31GiB
+eventflow-db-1;0.81%;39.65MiB / 31.31GiB
+13:35:53
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;3.27%;126.1MiB / 31.31GiB
+eventflow-db-1;0.73%;39.27MiB / 31.31GiB
+13:36:00
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;3.66%;126.1MiB / 31.31GiB
+eventflow-db-1;0.79%;39.42MiB / 31.31GiB
+13:36:06
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;4.34%;126.1MiB / 31.31GiB
+eventflow-db-1;0.78%;39.74MiB / 31.31GiB
+13:36:12
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;3.97%;126.1MiB / 31.31GiB
+eventflow-db-1;4.25%;39.18MiB / 31.31GiB
+13:36:19
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;1.10%;126MiB / 31.31GiB
+eventflow-db-1;0.11%;39.68MiB / 31.31GiB
+13:36:25
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;3.86%;126MiB / 31.31GiB
+eventflow-db-1;0.91%;39.36MiB / 31.31GiB
+13:36:31
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;3.93%;126MiB / 31.31GiB
+eventflow-db-1;0.77%;39.66MiB / 31.31GiB
+13:36:37
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;2.79%;126.3MiB / 31.31GiB
+eventflow-db-1;0.78%;39.81MiB / 31.31GiB
+13:36:43
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;0.97%;126.3MiB / 31.31GiB
+eventflow-db-1;0.01%;39.6MiB / 31.31GiB
+13:36:50
+eventflow-frontend-1;0.00%;65.7MiB / 31.31GiB
+eventflow-backend-1;0.76%;126.3MiB / 31.31GiB
+eventflow-db-1;0.00%;39.8MiB / 31.31GiB
